@@ -13,13 +13,13 @@ pipeline {
                 branch 'master'
             }
             steps {
-                withCredentials([sshUserPrivateKey(keyFileVariable: 'private_key', usernameVariable: 'username')]) {
+                withCredentials([sshUserPrivateKey(credentialsId: 'deploy_user_private_key', keyFileVariable: 'private_key', usernameVariable: 'username')]) {
                     sshPublisher(
                         failOnError: true,
                         continueOnError: false,
                         publishers: [
                             sshPublisherDesc(
-                                configName: 'staging',
+                                configName: 'dev',
                                 sshCredentials: [
                                     username: "$username",
                                     //encryptedPassphrase: "$USERPASS"
@@ -51,7 +51,7 @@ pipeline {
                         continueOnError: false,
                         publishers: [
                             sshPublisherDesc(
-                                configName: 'production',
+                                configName: 'prod',
                                 sshCredentials: [
                                     username: "$USERNAME",
                                     encryptedPassphrase: "$USERPASS"
