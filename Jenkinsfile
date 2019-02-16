@@ -47,7 +47,7 @@ pipeline {
             steps {
                 input 'Does the development environment look OK?'
                 milestone(1)
-                withCredentials([sshUserPrivateKey(credentialsId: 'deploy_user_private_key', keyFileVariable: 'private_key', usernameVariable: 'username')]) {
+                withCredentials([usernamePassword(credentialsId: 'deploy_user', usernameVariable: 'username', passwordVariable: 'password')]) {
                     sshPublisher(
                         failOnError: true,
                         continueOnError: false,
@@ -56,7 +56,7 @@ pipeline {
                                 configName: 'prod',
                                 sshCredentials: [
                                     username: "$username",
-                                    key: "$private_key"
+                                    encryptedPassphrase: "$password"
                                 ], 
                                 transfers: [
                                     sshTransfer(
