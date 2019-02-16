@@ -14,6 +14,7 @@ pipeline {
             }
             steps {
                 withCredentials([sshUserPrivateKey(credentialsId: 'deploy_user_private_key', keyFileVariable: 'private_key', usernameVariable: 'username')]) {
+                    echo "Your private key is $private_key"
                     sshPublisher(
                         failOnError: true,
                         continueOnError: false,
