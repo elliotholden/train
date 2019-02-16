@@ -10,7 +10,7 @@ pipeline {
         }
         stage('DeployToStaging') {
             when {
-                branch 'master'
+                branch 'dev'
             }
             steps {
                 withCredentials([sshUserPrivateKey(credentialsId: 'deploy_user_private_key', keyFileVariable: 'private_key', usernameVariable: 'username')]) {
@@ -22,7 +22,7 @@ pipeline {
                                 configName: 'dev',
                                 sshCredentials: [
                                     username: "$username",
-                                    //encryptedPassphrase: "$USERPASS"
+                                    key: $private_key", 
                                 ], 
                                 transfers: [
                                     sshTransfer(
@@ -40,12 +40,12 @@ pipeline {
         }
         stage('DeployToProduction') {
             when {
-                branch 'master'
+                branch 'prod'
             }
             steps {
-                input 'Does the staging environment look OK?'
+                input 'Does the development environment look OK?'
                 milestone(1)
-                withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
+                withCredentials([sshUserPrivateKey(credentialsId: 'deploy_user_private_key', keyFileVariable: 'private_key', usernameVariable: 'username')]) {
                     sshPublisher(
                         failOnError: true,
                         continueOnError: false,
@@ -53,8 +53,8 @@ pipeline {
                             sshPublisherDesc(
                                 configName: 'prod',
                                 sshCredentials: [
-                                    username: "$USERNAME",
-                                    encryptedPassphrase: "$USERPASS"
+                                    username: "$username",
+                                    key: $private_key
                                 ], 
                                 transfers: [
                                     sshTransfer(
