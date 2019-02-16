@@ -13,8 +13,9 @@ pipeline {
                 branch 'dev'
             }
             steps {
-                withCredentials([sshUserPrivateKey(credentialsId: 'deploy_user_private_key', keyFileVariable: 'private_key', usernameVariable: 'username')]) {
-                    echo "Your private key is $private_key"
+                withCredentials([usernamePassword(credentialsId: 'deploy_user', usernameVariable: 'username', passwordVariable: 'password')]) {
+                    echo "Your username is $username"
+                    echo "Your password key is $password"
                     sshPublisher(
                         failOnError: true,
                         continueOnError: false,
@@ -23,7 +24,7 @@ pipeline {
                                 configName: 'dev',
                                 sshCredentials: [
                                     username: "$username",
-                                    key: "$private_key"
+                                    encryptedPassphrase: "$password"
                                 ], 
                                 transfers: [
                                     sshTransfer(
