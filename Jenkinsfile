@@ -22,7 +22,7 @@ pipeline {
                                 configName: 'dev',
                                 sshCredentials: [
                                     username: "$username",
-                                    key: $private_key", 
+                                    key: "$private_key"
                                 ], 
                                 transfers: [
                                     sshTransfer(
@@ -54,7 +54,7 @@ pipeline {
                                 configName: 'prod',
                                 sshCredentials: [
                                     username: "$username",
-                                    key: $private_key
+                                    key: "$private_key"
                                 ], 
                                 transfers: [
                                     sshTransfer(
