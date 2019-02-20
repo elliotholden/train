@@ -14,14 +14,14 @@ pipeline {
             }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'deploy_user', usernameVariable: 'username', passwordVariable: 'password')]) {
-                    echo "Your username is $username"
-                    echo "Your password key is $password"
+                    //echo "Your username is $username"
+                    //echo "Your password key is $password"
                     sshPublisher(
                         failOnError: true,
                         continueOnError: false,
                         publishers: [
                             sshPublisherDesc(
-                                configName: 'dev',
+                                configName: 'Dev Application Server (Zone B)',
                                 sshCredentials: [
                                     username: "$username",
                                     encryptedPassphrase: "$password"
