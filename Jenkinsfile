@@ -45,8 +45,8 @@ pipeline {
                 branch 'prod'
             }
             steps {
-                input 'Does the development environment look OK?'
-                milestone(1)
+                //input 'Does the development environment look OK?'
+                //milestone(1)
                 withCredentials([usernamePassword(credentialsId: 'deploy_user', usernameVariable: 'username', passwordVariable: 'password')]) {
                     sshPublisher(
                         failOnError: true,
