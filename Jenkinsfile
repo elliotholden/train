@@ -64,7 +64,9 @@ pipeline {
                                         removePrefix: 'dist/',
                                         remoteDirectory: '/tmp',
                                         execCommand: 'sudo /usr/bin/systemctl stop train-schedule && rm -rf /opt/train-schedule/* && unzip /tmp/trainSchedule.zip -d /opt/train-schedule && sudo /usr/bin/systemctl start train-schedule'
-                                   ),
+                                    ),
+                                 ]
+                            ),
                             sshPublisherDesc(
                                 configName: 'prod2',
                                 sshCredentials: [
