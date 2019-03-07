@@ -45,19 +45,34 @@ pipeline {
                 branch 'prod'
             }
             steps {
-                input 'Does the development environment look OK?'
-                milestone(1)
+                //input 'Does the development environment look OK?'
+                //milestone(1)
                 withCredentials([usernamePassword(credentialsId: 'deploy_user', usernameVariable: 'username', passwordVariable: 'password')]) {
                     sshPublisher(
                         failOnError: true,
                         continueOnError: false,
                         publishers: [
                             sshPublisherDesc(
-                                configName: 'prod',
+                                configName: 'Prod Application Server (Zone A)',
                                 sshCredentials: [
                                     username: "$username",
                                     encryptedPassphrase: "$password"
                                 ], 
+                                transfers: [
+                                    sshTransfer(
+                                        sourceFiles: 'dist/trainSchedule.zip',
+                                        removePrefix: 'dist/',
+                                        remoteDirectory: '/tmp',
+                                        execCommand: 'sudo /usr/bin/systemctl stop train-schedule && rm -rf /opt/train-schedule/* && unzip /tmp/trainSchedule.zip -d /opt/train-schedule && sudo /usr/bin/systemctl start train-schedule'
+                                    ),
+                                 ]
+                            ),
+                            sshPublisherDesc(
+                                configName: 'prod2',
+                                sshCredentials: [
+                                    username: "$username",
+                                    encryptedPassphrase: "$password"
+                                ],  
                                 transfers: [
                                     sshTransfer(
                                         sourceFiles: 'dist/trainSchedule.zip',
