@@ -14,8 +14,6 @@ pipeline {
             }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'deploy_user', usernameVariable: 'username', passwordVariable: 'password')]) {
-                    //echo "Your username is $username"
-                    //echo "Your password key is $password"
                     sshPublisher(
                         failOnError: true,
                         continueOnError: false,
@@ -45,8 +43,8 @@ pipeline {
                 branch 'prod'
             }
             steps {
-                //input 'Does the development environment look OK?'
-                //milestone(1)
+                input 'Does the development environment look OK?'
+                milestone(1)
                 withCredentials([usernamePassword(credentialsId: 'deploy_user', usernameVariable: 'username', passwordVariable: 'password')]) {
                     sshPublisher(
                         failOnError: true,
